@@ -1,0 +1,99 @@
+{
+  "name": "delaford",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=10.3.0 <11",
+    "npm": "~6.14.4"
+  },
+  "scripts": {
+    "dev:node": "npx cross-env NODE_ENV=development nodemon --exec ./node_modules/.bin/babel-node server.js --route ./server/.babelrc",
+    "server:prod": "npx cross-env NODE_ENV=production node server.js",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --modern",
+    "lint": "vue-cli-service lint",
+    "start": "pm2-runtime start ecosystem.config.js --env production",
+    "postinstall": "npm run build-server && npm run build",
+    "test:unit": "vue-cli-service test:unit",
+    "ndb": "ndb npm run dev:node",
+    "format": "eslint --fix",
+    "clean-server": "npx rimraf build && mkdir build",
+    "transpile-server": "babel --route --config-file ./server/.babelrc ./server --out-dir ./build --copy-files --source-maps",
+    "build-server": "npm run clean-server && npm run transpile-server",
+    "lint:css": "stylelint '**/*.vue' --syntax scss"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.7.2",
+    "ajv": "6.10.0",
+    "axios": "^0.21.2",
+    "compression": "^1.7.3",
+    "date-fns": "^1.30.1",
+    "express": "^4.16.3",
+    "express-sslify": "^1.2.0",
+    "lodash": "^4.17.21",
+    "module-alias": "^2.1.0",
+    "node-emoji": "^1.8.1",
+    "pathfinding": "^0.4.18",
+    "pm2": "^3.2.4",
+    "ssl-express-www": "^3.0.3",
+    "uuid": "^3.3.2",
+    "vue": "^2.6.2",
+    "vue-tippy": "^2.0.19",
+    "vuex": "^3.0.1",
+    "vuex-persistedstate": "^2.5.4",
+    "ws": "^7.5.6"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
+    "@babel/plugin-transform-modules-amd": "^7.2.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
+    "@babel/plugin-transform-modules-systemjs": "^7.2.0",
+    "@babel/plugin-transform-modules-umd": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.1.0",
+    "@vue/cli-plugin-babel": "^3.0.4",
+    "@vue/cli-plugin-eslint": "^3.0.4",
+    "@vue/cli-plugin-unit-jest": "^3.0.4",
+    "@vue/cli-service": "^3.0.4",
+    "@vue/eslint-config-airbnb": "^4.0.0",
+    "@vue/test-utils": "^1.0.0-beta.20",
+    "babel-plugin-root-import": "^6.4.1",
+    "eslint-import-resolver-babel-plugin-root-import": "^1.1.1",
+    "eslint-plugin-import": "^2.18.2",
+    "lint-staged": "^8.1.6",
+    "ndb": "^1.1.5",
+    "node-sass": "^4.14.1",
+    "nodemon": "^1.18.4",
+    "sass-loader": "^7.0.1",
+    "stylelint": "^10.0.1",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-processor-html": "^1.0.0",
+    "vue-template-compiler": "^2.5.17"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "nodemonConfig": {
+    "env": {
+      "SITE_URL": "http://website.test"
+    }
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "vue-cli-service lint",
+      "git add"
+    ],
+    "*.vue": [
+      "vue-cli-service lint",
+      "npm run lint:css",
+      "git add"
+    ]
+  }
+}
